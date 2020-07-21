@@ -64,45 +64,66 @@ const Mapper1 = () => {
         minZoom: 6.5,
       }),
     });
-    const openStreetMapStandard = new TileLayer({
+    let openStreetMapStandard = new TileLayer({
       source: new OSMSource(),
-      visible: true,
+      visible: layerSelected === "OSMStandard",
       title: "OSMStandard",
     });
 
-    const openStreetMapHumanitarian = new TileLayer({
+    let openStreetMapHumanitarian = new TileLayer({
       source: new OSMSource({
         url: "https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
       }),
-      visible: false,
+      visible: layerSelected === "openStreenMapHumanitarian",
       title: "OSMHumanitarian",
     });
 
-    const stamenTerrain = new TileLayer({
+    let stamenTerrain = new TileLayer({
       source: new XYZSource({
         url: "http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg",
       }),
       attributions:
         'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-      visible: false,
+      visible: layerSelected === "StamenTerrain",
       title: "StamenTerrain",
     });
 
-    const baseLayerGroup = new layerGroup({
+    console.log("derd check stamen visible", layerSelected);
+    console.log(
+      "derd check stamen visible",
+      layerSelected === "OSMHumanitarian"
+    );
+    console.log("derd check stamen visible", layerSelected === "StamenTerrain");
+
+    let baseLayerGroup = new layerGroup({
       layers: [openStreetMapHumanitarian, openStreetMapStandard, stamenTerrain],
     });
+    //map.removeLayer(baseLayerGroup);
     map.addLayer(baseLayerGroup);
+
+    baseLayerGroup.getLayers().forEach(function (element, index, array) {
+      console.log("derd, element", element);
+      let baseLayerTitle = element.get("title");
+      console.log("derd getting base layer", baseLayerTitle);
+      console.log("derd getting layer selected", layerSelected);
+      console.log("derd assessing ", baseLayerTitle === layerSelected);
+      element.setVisible(baseLayerTitle === layerSelected);
+    });
 
     /*const layerSwitcher = new LayerSwitcher({
       tipLabel: "Légende", // Optional label for button
     });
     map.addControl(layerSwitcher);*/
+
+    return () => {
+      console.log("derd unmount", map);
+    };
   });
 
   const style = {
-    width: "100%",
+    //width: "100%",
     height: height,
-    backgroundColor: "#cccccc",
+    //backgroundColor: "#cccccc",
   };
 
   return (
@@ -110,6 +131,7 @@ const Mapper1 = () => {
       <div id="gridContainer" className={"gridContainer"}>
         <div id="grid1" className={"grid1"}>
           <div id="sidebar" className={"sidebar"}>
+            <button>info</button>
             <h2>Base Layers</h2>
             <div>
               <label>
@@ -117,7 +139,10 @@ const Mapper1 = () => {
                   type="radio"
                   name="baseLayerRadioButton"
                   value="OSMStandard"
-                  checked="true"
+                  checked={layerSelected === "OSMStandard"}
+                  onChange={() => {
+                    layerSwitcher("OSMStandard");
+                  }}
                 />
                 OSM Standard
               </label>
@@ -127,7 +152,11 @@ const Mapper1 = () => {
                 <input
                   type="radio"
                   name="baseLayerRadioButton"
-                  value="openStreetMapHumanitarian"
+                  value="OSMHumanitarian"
+                  checked={layerSelected === "OSMHumanitarian"}
+                  onChange={() => {
+                    layerSwitcher("OSMHumanitarian");
+                  }}
                 />
                 OSM Humanitarian
               </label>
@@ -138,6 +167,10 @@ const Mapper1 = () => {
                   type="radio"
                   name="baseLayerRadioButton"
                   value="StamenTerrain"
+                  checked={layerSelected === "StamenTerrain"}
+                  onChange={() => {
+                    layerSwitcher("StamenTerrain");
+                  }}
                 />
                 Stamen Terrain
               </label>

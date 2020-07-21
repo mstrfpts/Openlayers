@@ -3,7 +3,9 @@ import React from "react";
 // // import { OSM } from "ol/source";
 // import Mapper from "./Mapper";
 // import Mapper1 from "./Mapper1";
-import Mapper2 from "./Mapper2";
+//import Mapper2 from "./Mapper2";
+//import Mapper3 from "./Mapper3";
+import { SomeData } from "./API";
 
 /*export default class App extends Component {
   render() {
@@ -15,9 +17,11 @@ function App() {
   return (
     <div>
       <Header />
-      {<Mapper2 />}
+      {/*<Mapper3 />*/}
+      {/*<Mapper2 />*/}
       {/*<Mapper1 />*/}
       {/*<Mapper />*/}
+      <div>{SomeData()}</div>
     </div>
   );
 }
