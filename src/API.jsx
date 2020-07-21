@@ -23,7 +23,8 @@ export const SomeData = () => {
       .then((y) => {
         setSearchResult({ data: y, loading: false });
       });
-  }, [searchString]);*/
+  }, [searchString]);
+*/
 
 /*export const SearchApi = (searchString: string, projectId: string) => {
     const [searchResult, setSearchResult] = useState<{ data: any; loading: boolean }>({
